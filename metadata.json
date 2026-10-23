@@ -1,0 +1,15 @@
+{
+  "uuid": "system-monitor@marufallammahim.github.io",
+  "name": "System Monitor — Premium",
+  "description": "Real-time hardware telemetry and system resource monitoring dashboard for GNOME Shell 51 with live sparklines, per-core CPU metrics, multi-GPU telemetry, RAM/Swap gauges, partition storage, battery health, and rotational fan animations.",
+  "version": 1,
+  "version-name": "1.0.0",
+  "shell-version": [
+    "51",
+    "51.0",
+    "51.1"
+  ],
+  "url": "https://github.com/marufallammahim/system-monitor-premium",
+  "settings-schema": "org.gnome.shell.extensions.system-monitor-premium",
+  "gettext-domain": "system-monitor-premium"
+}

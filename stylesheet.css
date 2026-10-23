@@ -1,0 +1,581 @@
+/**
+ * System Monitor — Premium (system-monitor@marufallammahim.github.io)
+ * Premium Dark GNOME Shell 51 Stylesheet
+ *
+ * Inspired by the Neon GNOME System Monitor Dashboard reference:
+ * - Deep navy glass surfaces (#0b0f19 / #111827 / #161f33)
+ * - Subtle neon cyan (#38bdf8), indigo/violet (#6366f1 / #a855f7), and emerald (#10b981) accents
+ * - High-contrast typography, clean numerical alignment, and smooth transitions
+ */
+
+/* Top Bar Panel Button & Pill */
+.sm-panel-button {
+    padding: 0 4px;
+    margin: 2px 3px;
+    border-radius: 99px;
+    background-color: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(99, 102, 241, 0.45);
+    transition-duration: 150ms;
+}
+
+.sm-panel-button:hover,
+.sm-panel-button:focus {
+    background-color: rgba(30, 41, 59, 0.95);
+    border-color: rgba(56, 189, 248, 0.75);
+}
+
+.sm-topbar-pill {
+    spacing: 6px;
+    padding: 2px 6px;
+}
+
+.sm-topbar-icon {
+    color: #38bdf8;
+}
+
+.sm-topbar-cpu-label {
+    color: #f8fafc;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.sm-topbar-freq-label {
+    color: #94a3b8;
+    font-weight: 500;
+    font-size: 11.5px;
+}
+
+.sm-topbar-sparkline {
+    border-radius: 4px;
+    border: 1px solid rgba(56, 189, 248, 0.28);
+}
+
+.sm-topbar-chevron {
+    icon-size: 11px;
+    color: #94a3b8;
+}
+
+/* Popup Menu Wrapper Reset */
+.sm-popup-menu-box {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+.sm-popup-base-item {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+/* Main Dashboard Root Container */
+.sm-dashboard-root {
+    width: 880px;
+    height: 720px;
+    background-color: #0b0f19;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 16px;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.68);
+    color: #f1f5f9;
+    overflow: hidden;
+}
+
+.sm-dashboard-compact {
+    width: 580px;
+    height: 640px;
+}
+
+/* Header Bar */
+.sm-header-bar {
+    padding: 12px 18px;
+    background-color: #0e1422;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+    spacing: 12px;
+}
+
+.sm-brand-icon-bin {
+    padding: 4px;
+    border-radius: 10px;
+    background-color: rgba(30, 58, 138, 0.35);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.sm-header-title {
+    color: #f8fafc;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.sm-header-subtitle {
+    color: #94a3b8;
+    font-size: 11.5px;
+    font-weight: 400;
+}
+
+.sm-icon-button {
+    padding: 6px;
+    border-radius: 8px;
+    background-color: rgba(30, 41, 59, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    transition-duration: 120ms;
+}
+
+.sm-icon-button:hover,
+.sm-icon-button:focus {
+    background-color: rgba(51, 65, 85, 0.85);
+    border-color: rgba(56, 189, 248, 0.55);
+}
+
+.sm-icon-button-active {
+    background-color: rgba(79, 70, 229, 0.45);
+    border-color: #818cf8;
+}
+
+.sm-close-button:hover {
+    background-color: rgba(220, 38, 38, 0.35);
+    border-color: rgba(248, 113, 113, 0.65);
+}
+
+/* Body Container (Sidebar + Scrollable Main Area) */
+.sm-body-container {
+    spacing: 0;
+}
+
+/* Sidebar Navigation */
+.sm-sidebar {
+    width: 174px;
+    padding: 12px 10px;
+    background-color: #0d121f;
+    border-right: 1px solid rgba(148, 163, 184, 0.12);
+    spacing: 6px;
+}
+
+.sm-nav-list {
+    spacing: 4px;
+}
+
+.sm-nav-btn {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    transition-duration: 140ms;
+}
+
+.sm-nav-btn:hover,
+.sm-nav-btn:focus {
+    background-color: rgba(30, 41, 59, 0.65);
+    border-color: rgba(148, 163, 184, 0.18);
+}
+
+.sm-nav-btn-active {
+    background-gradient-direction: horizontal;
+    background-gradient-start: #3730a3;
+    background-gradient-end: #4f46e5;
+    border-color: rgba(129, 140, 248, 0.55);
+}
+
+.sm-nav-btn-content {
+    spacing: 10px;
+}
+
+.sm-nav-label {
+    color: #e2e8f0;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.sm-nav-settings-btn {
+    margin-top: 8px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+/* Scrollable Content Box & Grid Rows */
+.sm-scroll-view {
+    padding: 0;
+}
+
+.sm-content-box {
+    padding: 14px;
+    spacing: 12px;
+}
+
+.sm-grid-row {
+    spacing: 12px;
+}
+
+/* Monitoring Cards */
+.sm-card {
+    background-color: #131b2e;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 14px;
+    padding: 12px 14px;
+    spacing: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
+}
+
+.sm-card-full {
+    background-color: #131b2e;
+}
+
+.sm-card-header {
+    spacing: 8px;
+    padding-bottom: 2px;
+}
+
+.sm-card-icon-bin {
+    padding: 5px;
+    border-radius: 8px;
+    background-color: rgba(30, 41, 59, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.sm-card-title {
+    color: #f8fafc;
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.sm-card-subtitle {
+    color: #94a3b8;
+    font-size: 10.5px;
+    font-weight: 500;
+}
+
+.sm-status-badge {
+    padding: 2px 7px;
+    border-radius: 6px;
+    background-color: rgba(30, 41, 59, 0.85);
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+/* System Information Two-Column Card */
+.sm-sysinfo-body {
+    spacing: 18px;
+}
+
+.sm-sysinfo-col {
+    spacing: 4px;
+}
+
+.sm-sysinfo-col-right {
+    padding-left: 14px;
+    border-left: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.sm-distro-logo-bin {
+    padding-top: 4px;
+}
+
+/* Split Card Panes & Headlines */
+.sm-card-split {
+    spacing: 12px;
+}
+
+.sm-card-left-pane {
+    spacing: 6px;
+}
+
+.sm-card-right-pane {
+    spacing: 5px;
+    padding-left: 10px;
+    border-left: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.sm-headline-row {
+    spacing: 8px;
+}
+
+.sm-metric-big {
+    color: #f8fafc;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.sm-metric-sub {
+    color: #94a3b8;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding-bottom: 3px;
+}
+
+/* Key-Value Metric Rows */
+.sm-kv-row {
+    spacing: 8px;
+}
+
+.sm-kv-label {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.sm-kv-value {
+    color: #f1f5f9;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.sm-text-cyan {
+    color: #38bdf8;
+}
+
+.sm-text-violet {
+    color: #c084fc;
+}
+
+.sm-text-blue {
+    color: #60a5fa;
+}
+
+.sm-text-emerald {
+    color: #34d399;
+}
+
+.sm-text-muted {
+    color: #94a3b8;
+}
+
+/* Per-Core CPU Strip */
+.sm-core-strip {
+    spacing: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(148, 163, 184, 0.10);
+}
+
+.sm-core-item {
+    spacing: 3px;
+}
+
+.sm-core-label {
+    color: #cbd5e1;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.sm-core-meta {
+    color: #94a3b8;
+    font-size: 9.5px;
+}
+
+/* Progress Bars */
+.sm-progress-track {
+    height: 6px;
+    border-radius: 99px;
+    background-color: #1e293b;
+    overflow: hidden;
+}
+
+.sm-mem-bar-wide {
+    height: 7px;
+    margin-top: 2px;
+}
+
+.sm-progress-fill {
+    height: 6px;
+    border-radius: 99px;
+}
+
+.sm-progress-fill-cyan {
+    background-gradient-direction: horizontal;
+    background-gradient-start: #0ea5e9;
+    background-gradient-end: #6366f1;
+}
+
+/* Memory Gauges & Legends */
+.sm-gauges-pair {
+    spacing: 8px;
+}
+
+.sm-legend-row {
+    spacing: 12px;
+    padding-top: 2px;
+}
+
+.sm-legend-item {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Disk & Partition Table */
+.sm-disk-summary-col {
+    spacing: 2px;
+    padding-left: 6px;
+}
+
+.sm-disk-cap-title {
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.sm-disk-cap-sub {
+    color: #94a3b8;
+    font-size: 10.5px;
+}
+
+.sm-table-header {
+    padding: 4px 0 2px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+    spacing: 6px;
+}
+
+.sm-th-device {
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.sm-th-num {
+    width: 44px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.sm-th-bar {
+    width: 78px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.sm-table-body {
+    spacing: 4px;
+}
+
+.sm-table-row {
+    spacing: 6px;
+}
+
+.sm-td-device {
+    color: #e2e8f0;
+    font-size: 10.5px;
+    font-weight: 500;
+}
+
+.sm-td-num {
+    width: 44px;
+    color: #cbd5e1;
+    font-size: 10px;
+    text-align: right;
+}
+
+.sm-td-bar {
+    width: 78px;
+    spacing: 4px;
+}
+
+.sm-td-pct {
+    color: #f8fafc;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Battery Card */
+.sm-bat-state-col {
+    spacing: 4px;
+    padding-left: 6px;
+}
+
+.sm-bat-status-title {
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.sm-bat-status-sub {
+    color: #94a3b8;
+    font-size: 10.5px;
+}
+
+/* Fan Card */
+.sm-fans-col {
+    spacing: 10px;
+}
+
+.sm-fan-item-row {
+    spacing: 10px;
+}
+
+.sm-fan-info-col {
+    spacing: 2px;
+}
+
+.sm-fan-label {
+    color: #94a3b8;
+    font-size: 10.5px;
+}
+
+.sm-fan-rpm {
+    color: #38bdf8;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.sm-fan-graph-col {
+    spacing: 4px;
+}
+
+/* Inline Settings Panel */
+.sm-settings-row {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.10);
+}
+
+.sm-pill-button {
+    padding: 4px 12px;
+    border-radius: 8px;
+    background-color: rgba(56, 189, 248, 0.18);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #e0f2fe;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.sm-prefs-launch-btn {
+    margin-top: 8px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background-color: #3730a3;
+    border: 1px solid #818cf8;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Footer Bar */
+.sm-footer-bar {
+    padding: 8px 18px;
+    background-color: #0d121f;
+    border-top: 1px solid rgba(148, 163, 184, 0.14);
+    spacing: 8px;
+}
+
+.sm-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 99px;
+}
+
+.sm-live-dot-active {
+    background-color: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+.sm-live-dot-error {
+    background-color: #ef4444;
+}
+
+.sm-footer-status {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.sm-footer-guidance {
+    color: #64748b;
+    font-size: 11px;
+}

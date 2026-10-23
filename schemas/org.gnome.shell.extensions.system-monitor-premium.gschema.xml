@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="system-monitor-premium">
+  <schema id="org.gnome.shell.extensions.system-monitor-premium"
+          path="/org/gnome/shell/extensions/system-monitor-premium/">
+
+    <key name="refresh-interval" type="i">
+      <default>2</default>
+      <range min="1" max="30"/>
+      <summary>Fast telemetry refresh interval in seconds</summary>
+      <description>Interval in seconds between fast hardware telemetry updates (CPU, GPU, RAM, Fan).</description>
+    </key>
+
+    <key name="slow-refresh-interval" type="i">
+      <default>10</default>
+      <range min="5" max="120"/>
+      <summary>Slow telemetry refresh interval in seconds</summary>
+      <description>Interval in seconds between slower storage, battery capacity, and system uptime checks.</description>
+    </key>
+
+    <key name="temperature-unit" type="s">
+      <choices>
+        <choice value="celsius"/>
+        <choice value="fahrenheit"/>
+      </choices>
+      <default>'celsius'</default>
+      <summary>Temperature display unit</summary>
+      <description>Display hardware temperatures in Celsius (°C) or Fahrenheit (°F).</description>
+    </key>
+
+    <key name="graph-history-length" type="i">
+      <default>60</default>
+      <range min="20" max="300"/>
+      <summary>Rolling graph sample count</summary>
+      <description>Maximum number of historical telemetry samples retained in bounded ring buffers.</description>
+    </key>
+
+    <key name="show-topbar-frequency" type="b">
+      <default>true</default>
+      <summary>Show CPU frequency in top bar</summary>
+      <description>Display current average CPU frequency (GHz) next to CPU utilization in the top panel.</description>
+    </key>
+
+    <key name="show-topbar-sparkline" type="b">
+      <default>true</default>
+      <summary>Show live sparkline in top bar</summary>
+      <description>Display the compact live CPU utilization sparkline in the GNOME Shell top bar.</description>
+    </key>
+
+    <key name="enable-animations" type="b">
+      <default>true</default>
+      <summary>Enable smooth animations and fan rotation</summary>
+      <description>Enable smooth gauge transitions and proportional fan blade rotation when popup is open.</description>
+    </key>
+
+    <key name="compact-layout" type="b">
+      <default>false</default>
+      <summary>Use compact dashboard layout</summary>
+      <description>Collapse navigation sidebar and reduce card padding for smaller screens.</description>
+    </key>
+
+    <key name="show-card-sysinfo" type="b">
+      <default>true</default>
+      <summary>Show System Information card</summary>
+      <description>Display the Operating System, Host, and Kernel information card in the Overview.</description>
+    </key>
+
+    <key name="show-card-cpu" type="b">
+      <default>true</default>
+      <summary>Show CPU monitoring card</summary>
+      <description>Display the CPU utilization, frequency, temperature, and per-core card.</description>
+    </key>
+
+    <key name="show-card-gpu" type="b">
+      <default>true</default>
+      <summary>Show GPU monitoring card</summary>
+      <description>Display the GPU utilization, clock, temperature, VRAM, and power card.</description>
+    </key>
+
+    <key name="show-card-memory" type="b">
+      <default>true</default>
+      <summary>Show Memory and Swap card</summary>
+      <description>Display the RAM and Swap circular gauges and breakdown card.</description>
+    </key>
+
+    <key name="show-card-storage" type="b">
+      <default>true</default>
+      <summary>Show Disk and Partitions card</summary>
+      <description>Display the mounted filesystems and partition capacity card.</description>
+    </key>
+
+    <key name="show-card-battery" type="b">
+      <default>true</default>
+      <summary>Show Battery monitoring card</summary>
+      <description>Display the battery charge, power rate, health, and remaining time card.</description>
+    </key>
+
+    <key name="show-card-fan" type="b">
+      <default>true</default>
+      <summary>Show Fan and Thermal card</summary>
+      <description>Display the hardware fan RPM, rotational animation, and thermal history card.</description>
+    </key>
+
+  </schema>
+</schemalist>
