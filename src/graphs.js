@@ -166,7 +166,7 @@ class MultiLineGraph extends St.DrawingArea {
         this._series = [];
         this._unavailableText = null;
 
-        this._repaintId = this.connect('repaint', this._onRepaint.bind(this));
+        this._repaintId = this.connect('repaint', this._onRepaint.bind(this)); // repaint signal is emitted when the widget needs to be redrawn
     }
 
     setSeries(seriesList, unavailableText = null) {
