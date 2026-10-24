@@ -1,31 +1,70 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: GNOME Extension CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  build:
-
+  validate:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install validation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq glib2.0-bin
+
+      - name: Validate metadata.json
+        run: |
+          jq empty metadata.json
+          python3 - <<'PY'
+          import json
+          with open('metadata.json', 'r', encoding='utf-8') as f:
+              data = json.load(f)
+
+          required = ['uuid', 'name', 'description', 'shell-version', 'version']
+          missing = [key for key in required if key not in data]
+          if missing:
+              raise SystemExit(f'Missing required metadata keys: {missing}')
+
+          print(f"UUID: {data['uuid']}")
+          print(f"Shell versions: {', '.join(map(str, data['shell-version']))}")
+          PY
+
+      - name: Check required extension files
+        run: |
+          test -f extension.js
+          test -f prefs.js
+          test -f stylesheet.css
+          test -d schemas
+          test -f schemas/org.gnome.shell.extensions.system-monitor-premium.gschema.xml
+
+      - name: Compile GSettings schemas
+        run: glib-compile-schemas schemas
+
+      - name: Syntax check JavaScript files
+        run: |
+          node --check extension.js
+          node --check prefs.js
+
+      - name: Verify extension package layout
+        run: |
+          python3 - <<'PY'
+          import os
+          required = [
+              'extension.js',
+              'prefs.js',
+              'stylesheet.css',
+              'metadata.json',
+              'schemas',
+          ]
+          missing = [path for path in required if not os.path.exists(path)]
+          if missing:
+              raise SystemExit(f'Missing required paths: {missing}')
+          print('Extension layout looks valid.')
+          PY
