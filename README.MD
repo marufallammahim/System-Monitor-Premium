@@ -184,7 +184,7 @@ Distributed under the **GNU General Public License v3.0 (GPLv3)**. See [LICENSE]
 **Maruf Allam Mahim**
 
 * GitHub: [@marufallammahim](https://github.com/marufallammahim)
-* Repository: [system-monitor-premium](https://github.com/marufallammahim/system-monitor-premium)
+* Repository: [system-monitor-premium](https://github.com/marufallammahim/System-Monitor-Premium)
 
 ---
 
