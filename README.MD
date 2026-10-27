@@ -4,7 +4,7 @@
 
 **A lightweight, real-time hardware telemetry and resource monitoring dashboard crafted for GNOME Shell 51.**
 
-[![GNOME Version](https://img.shields.io/badge/GNOME%20Shell-51%20%7C%2051.0%20%7C%2051.1-4a86cf?logo=gnome&style=for-the-badge)](https://extensions.gnome.org/)
+[![GNOME Version](https://img.shields.io/badge/GNOME%20Shell-51%20%7C%2051.0%20%7C%2051.1-4a86cf?logo=gnome&style=for-the-badge)](https://extensions.gnome.org/accounts/profile/marufallammahim)
 [![Extension Version](https://img.shields.io/badge/Version-1.0.1-brightgreen?style=for-the-badge)](https://github.com/marufallammahim/system-monitor-premium/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](LICENSE)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)](#)
