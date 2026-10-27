@@ -56,7 +56,7 @@ Ensure the required sensor and system utilities are installed on your distributi
 ### Arch / Manjaro / Fedora / Ubuntu / Debian
 
 ```bash
-# Arch Linux
+# Arch Linux "I use to be"
 sudo pacman -S lm_sensors libgtop
 
 # Fedora
