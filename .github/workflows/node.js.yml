@@ -17,7 +17,7 @@ jobs:
       - name: Install validation tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq glib2.0-bin
+          sudo apt-get install -y jq glib2.0-bin python3-venv
 
       - name: Validate metadata.json and GNOME Shell support range
         run: |
@@ -73,3 +73,11 @@ jobs:
               raise SystemExit(f'Missing required paths: {missing}')
           print('Extension layout looks valid.')
           PY
+
+      - name: Run Shexli static analyzer
+        run: |
+          python3 -m venv venv
+          . venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -U shexli
+          shexli .
