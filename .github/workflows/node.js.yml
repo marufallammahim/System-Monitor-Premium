@@ -149,8 +149,6 @@ jobs:
           python3 -m venv /tmp/shexli-venv
           /tmp/shexli-venv/bin/python -m pip install --upgrade pip
           /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
-          /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
-          /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
           /tmp/shexli-venv/bin/python - <<'PY'
           from pathlib import Path
           from zipfile import ZIP_DEFLATED, ZipFile
