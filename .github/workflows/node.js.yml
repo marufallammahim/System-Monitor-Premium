@@ -79,4 +79,20 @@ jobs:
           python3 -m venv /tmp/shexli-venv
           /tmp/shexli-venv/bin/python -m pip install --upgrade pip
           /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
-          /tmp/shexli-venv/bin/shexli "$GITHUB_WORKSPACE"
+          /tmp/shexli-venv/bin/python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          root = Path.cwd()
+          archive = Path('/tmp/system-monitor-premium-shexli.zip')
+          excluded = {'.git', 'venv', '__pycache__'}
+          with ZipFile(archive, 'w', ZIP_DEFLATED) as package:
+              for path in root.rglob('*'):
+                  if not path.is_file() or any(part in excluded for part in path.relative_to(root).parts):
+                      continue
+                  if path.name == 'gschemas.compiled':
+                      continue
+                  package.write(path, path.relative_to(root))
+          print(f'Created analyzer input: {archive}')
+          PY
+          /tmp/shexli-venv/bin/shexli /tmp/system-monitor-premium-shexli.zip
