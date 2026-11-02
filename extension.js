@@ -21,6 +21,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 import { SystemInfoProvider } from './src/system-info.js';
 import { CpuProvider } from './src/cpu.js';
@@ -131,6 +132,15 @@ class SystemMonitorIndicator extends PanelMenu.Button {
         this.add_child(this._topBarBox);
     }
 
+    _closeMenu(animate = true) {
+        // PopupMenu animation arguments changed in GNOME Shell 51.
+        const shellMajor = Number.parseInt(Config.PACKAGE_VERSION.split('.')[0], 10);
+        if (shellMajor >= 51)
+            this.menu.close({ animate });
+        else
+            this.menu.close(animate);
+    }
+
     _setupPopupBehavior() {
         this.menu.box.add_style_class_name('sm-popup-menu-box');
 
@@ -152,7 +162,7 @@ class SystemMonitorIndicator extends PanelMenu.Button {
         this._connectSignal(this.menu.actor || this.menu.box, 'key-press-event', (_actor, event) => {
             const symbol = event.get_key_symbol();
             if (symbol === Clutter.KEY_Escape) {
-                this.menu.close(true);
+                this._closeMenu(true);
                 return Clutter.EVENT_STOP;
             }
             return Clutter.EVENT_PROPAGATE;
@@ -167,10 +177,10 @@ class SystemMonitorIndicator extends PanelMenu.Button {
             extensionPath: this._extensionPath,
             settings: this._settings,
             onCloseRequested: () => {
-                this.menu.close(true);
+                this._closeMenu(true);
             },
             onOpenPreferences: () => {
-                this.menu.close(true);
+                this._closeMenu(true);
                 try {
                     this._extension.openPreferences();
                 } catch (_e) {
