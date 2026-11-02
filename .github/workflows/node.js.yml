@@ -76,8 +76,7 @@ jobs:
 
       - name: Run Shexli static analyzer
         run: |
-          python3 -m venv venv
-          . venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install -U shexli
-          shexli .
+          python3 -m venv /tmp/shexli-venv
+          /tmp/shexli-venv/bin/python -m pip install --upgrade pip
+          /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
+          /tmp/shexli-venv/bin/shexli "$GITHUB_WORKSPACE"
