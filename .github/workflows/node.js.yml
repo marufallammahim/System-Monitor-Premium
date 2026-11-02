@@ -36,8 +36,11 @@ jobs:
           actual = data['shell-version']
           if actual != expected:
               raise SystemExit(f'Expected GNOME Shell support {expected}, got {actual}')
+          if data.get('version-name') != '1.1.1' or data.get('version') != 3:
+              raise SystemExit('Expected release metadata version 1.1.1 (version 3)')
 
           print(f"UUID: {data['uuid']}")
+          print(f"Release: {data['version-name']} (version {data['version']})")
           print(f"Shell versions: {', '.join(actual)}")
           PY
 
@@ -108,8 +111,8 @@ jobs:
                   if not base.is_dir():
                       raise SystemExit(f'Missing extension directory: {directory}')
                   for path in sorted(base.rglob('*')):
-                      if path.is_file() and path.name != '__pycache__':
-                          relative = path.relative_to(root).as_posix()
+                      relative = path.relative_to(root).as_posix()
+                      if path.is_file() and path.name != '__pycache__' and relative != 'schemas/gschemas.compiled':
                           package.write(path, relative)
 
           required_entries = {
@@ -124,12 +127,17 @@ jobs:
               missing = required_entries - names
               if missing:
                   raise SystemExit(f'ZIP is missing required entries: {sorted(missing)}')
-              forbidden = [n for n in names if n.startswith('.github/') or n in {'README.md', 'README.MD', 'LICENCE', 'LICENSE'}]
+              forbidden = [
+                  n for n in names
+                  if n == 'schemas/gschemas.compiled'
+                  or n.startswith('.github/')
+                  or n in {'README.md', 'README.MD', 'LICENCE', 'LICENSE'}
+              ]
               if forbidden:
-                  raise SystemExit(f'Non-extension files found in ZIP: {forbidden}')
+                  raise SystemExit(f'Unnecessary/non-extension files found in ZIP: {forbidden}')
 
           print(f'Created {archive}')
-          print(f'Included {len(names)} extension files only.')
+          print(f'Included {len(names)} extension files only; compiled schemas excluded.')
           PY
           unzip -t "/tmp/extension-package/$(jq -r .uuid metadata.json).zip"
 
