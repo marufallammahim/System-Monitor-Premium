@@ -17,7 +17,7 @@ jobs:
       - name: Install validation tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq glib2.0-bin python3-venv
+          sudo apt-get install -y jq glib2.0-bin python3-venv unzip
 
       - name: Validate metadata.json and GNOME Shell support range
         run: |
@@ -74,6 +74,73 @@ jobs:
           print('Extension layout looks valid.')
           PY
 
+      - name: Build clean GNOME Extensions upload ZIP
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          root = Path.cwd()
+          metadata = json.loads((root / 'metadata.json').read_text(encoding='utf-8'))
+          uuid = metadata['uuid']
+          output_dir = Path('/tmp/extension-package')
+          output_dir.mkdir(parents=True, exist_ok=True)
+          archive = output_dir / f'{uuid}.zip'
+
+          included_files = [
+              'extension.js',
+              'prefs.js',
+              'stylesheet.css',
+              'metadata.json',
+          ]
+          included_dirs = ['assets', 'schemas', 'src']
+
+          with ZipFile(archive, 'w', ZIP_DEFLATED) as package:
+              for name in included_files:
+                  path = root / name
+                  if not path.is_file():
+                      raise SystemExit(f'Missing extension file: {name}')
+                  package.write(path, name)
+
+              for directory in included_dirs:
+                  base = root / directory
+                  if not base.is_dir():
+                      raise SystemExit(f'Missing extension directory: {directory}')
+                  for path in sorted(base.rglob('*')):
+                      if path.is_file() and path.name != '__pycache__':
+                          relative = path.relative_to(root).as_posix()
+                          package.write(path, relative)
+
+          required_entries = {
+              'extension.js',
+              'prefs.js',
+              'stylesheet.css',
+              'metadata.json',
+              'schemas/org.gnome.shell.extensions.system-monitor-premium.gschema.xml',
+          }
+          with ZipFile(archive) as package:
+              names = set(package.namelist())
+              missing = required_entries - names
+              if missing:
+                  raise SystemExit(f'ZIP is missing required entries: {sorted(missing)}')
+              forbidden = [n for n in names if n.startswith('.github/') or n in {'README.md', 'README.MD', 'LICENCE', 'LICENSE'}]
+              if forbidden:
+                  raise SystemExit(f'Non-extension files found in ZIP: {forbidden}')
+
+          print(f'Created {archive}')
+          print(f'Included {len(names)} extension files only.')
+          PY
+          unzip -t "/tmp/extension-package/$(jq -r .uuid metadata.json).zip"
+
+      - name: Upload GNOME Extensions test ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnome-extension-upload-zip
+          path: /tmp/extension-package/*.zip
+          if-no-files-found: error
+          retention-days: 14
+
       # Shexli 0.2.1 currently crashes with exit 139 on this runner.
       # Keep the analyzer visible but do not block the independent CI checks.
       - name: Run Shexli static analyzer (non-blocking)
@@ -81,6 +148,8 @@ jobs:
         run: |
           python3 -m venv /tmp/shexli-venv
           /tmp/shexli-venv/bin/python -m pip install --upgrade pip
+          /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
+          /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
           /tmp/shexli-venv/bin/python -m pip install --upgrade shexli
           /tmp/shexli-venv/bin/python - <<'PY'
           from pathlib import Path
