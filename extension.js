@@ -4,7 +4,7 @@
  *
  * Implements:
  * - Top-bar PanelMenu.Button indicator with live CPU %, average GHz, and Cairo sparkline
- * - Lazy initialization of the DashboardView popup on first open
+ * - Eager popup menu attachment so PopupMenu.isEmpty() is false when clicked
  * - Monitor boundary clamping and resolution change handling
  * - Fast & slow asynchronous telemetry refresh loops (pauses heavy dashboard updates when closed)
  * - Strict enable() / disable() resource, signal, cancellable, and actor cleanup
@@ -20,8 +20,6 @@ import Clutter from 'gi://Clutter';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
-import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 import { SystemInfoProvider } from './src/system-info.js';
 import { CpuProvider } from './src/cpu.js';
@@ -52,7 +50,6 @@ class SystemMonitorIndicator extends PanelMenu.Button {
         this._isRefreshingSlow = false;
 
         this._dashboardView = null;
-        this._customMenuSection = null;
 
         const historyLen = this._settings.get_int('graph-history-length') || 60;
         this._sysInfoProvider = new SystemInfoProvider();
@@ -132,25 +129,20 @@ class SystemMonitorIndicator extends PanelMenu.Button {
         this.add_child(this._topBarBox);
     }
 
-    _closeMenu(animate = true) {
-        // PopupMenu animation arguments changed in GNOME Shell 51.
-        const shellMajor = Number.parseInt(Config.PACKAGE_VERSION.split('.')[0], 10);
-        if (shellMajor >= 51)
-            this.menu.close({ animate });
-        else
-            this.menu.close(animate);
-    }
-
     _setupPopupBehavior() {
         this.menu.box.add_style_class_name('sm-popup-menu-box');
 
-        // Lazy initialization of the full dashboard when the popup opens for the first time
+        // Initialize and attach DashboardView immediately so this.menu.isEmpty() is false
+        // when the user clicks the top-bar button (PopupMenu.open() aborts if isEmpty() is true).
+        this._ensureDashboardInitialized();
+
         this._connectSignal(this.menu, 'open-state-changed', (_menu, isOpen) => {
             if (isOpen) {
                 this._ensureDashboardInitialized();
                 this._updatePopupConstraints();
                 if (this._dashboardView) {
                     this._dashboardView.setPopupOpenState(true);
+                    this._dashboardView.updateTelemetry(this._latestSnapshot, true);
                     this._refreshAllNow();
                 }
             } else if (this._dashboardView) {
@@ -159,43 +151,46 @@ class SystemMonitorIndicator extends PanelMenu.Button {
         });
 
         // Handle Escape key explicitly inside the popup
-        this._connectSignal(this.menu.actor || this.menu.box, 'key-press-event', (_actor, event) => {
-            const symbol = event.get_key_symbol();
-            if (symbol === Clutter.KEY_Escape) {
-                this._closeMenu(true);
-                return Clutter.EVENT_STOP;
-            }
-            return Clutter.EVENT_PROPAGATE;
-        });
+        const menuTarget = this.menu.actor || this.menu.box;
+        if (menuTarget) {
+            this._connectSignal(menuTarget, 'key-press-event', (_actor, event) => {
+                const symbol = event.get_key_symbol();
+                if (symbol === Clutter.KEY_Escape) {
+                    this.menu.close(true);
+                    return Clutter.EVENT_STOP;
+                }
+                return Clutter.EVENT_PROPAGATE;
+            });
+        }
     }
 
     _ensureDashboardInitialized() {
         if (this._dashboardView)
             return;
 
-        this._dashboardView = new DashboardView({
-            extensionPath: this._extensionPath,
-            settings: this._settings,
-            onCloseRequested: () => {
-                this._closeMenu(true);
-            },
-            onOpenPreferences: () => {
-                this._closeMenu(true);
-                try {
-                    this._extension.openPreferences();
-                } catch (_e) {
-                    // Ignore if preferences window is already open or unavailable
-                }
-            },
-        });
+        try {
+            this._dashboardView = new DashboardView({
+                extensionPath: this._extensionPath,
+                settings: this._settings,
+                onCloseRequested: () => {
+                    this.menu.close(true);
+                },
+                onOpenPreferences: () => {
+                    this.menu.close(true);
+                    try {
+                        this._extension.openPreferences();
+                    } catch (_e) {
+                        // Ignore if preferences window is already open
+                    }
+                },
+            });
 
-        this._customMenuSection = new PopupMenu.PopupBaseMenuItem({
-            reactive: false,
-            can_focus: false,
-            style_class: 'sm-popup-base-item',
-        });
-        this._customMenuSection.add_child(this._dashboardView.actor);
-        this.menu.addMenuItem(this._customMenuSection);
+            // Attach directly to this.menu.box so PopupMenu.isEmpty() returns false
+            // and internal sidebar button clicks do not trigger PopupBaseMenuItem.activate()
+            this.menu.box.add_child(this._dashboardView.actor);
+        } catch (err) {
+            console.error('[System Monitor — Premium] Failed to initialize dashboard view:', err);
+        }
     }
 
     _updatePopupConstraints() {
@@ -428,7 +423,6 @@ class SystemMonitorIndicator extends PanelMenu.Button {
             this._dashboardView.destroy();
             this._dashboardView = null;
         }
-        this._customMenuSection = null;
 
         if (this._topBarSparkline) {
             this._topBarSparkline.destroy();

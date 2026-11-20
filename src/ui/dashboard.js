@@ -163,12 +163,11 @@ export class DashboardView {
 
         this._bodyBox.add_child(this._sidebar);
 
-        // Main scrollable content area
+        // Main scrollable content area (GNOME Shell 51 St.ScrollView)
         this._scrollView = new St.ScrollView({
             x_expand: true,
             y_expand: true,
             style_class: 'sm-scroll-view',
-            overlay_scrollbars: true,
             hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.AUTOMATIC,
         });
@@ -209,7 +208,11 @@ export class DashboardView {
         this._contentBox.add_child(this._rowBatFan);
         this._contentBox.add_child(this._settingsPanel);
 
-        this._scrollView.child = this._contentBox;
+        if (typeof this._scrollView.set_child === 'function')
+            this._scrollView.set_child(this._contentBox);
+        else
+            this._scrollView.child = this._contentBox;
+
         this._bodyBox.add_child(this._scrollView);
         this.actor.add_child(this._bodyBox);
 
